@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title> Finivia </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendor/style.css">
+
+    <script src="https://js.stripe.com/v3"></script>
+
+    <style>
+        .navbar {
+            box-shadow: 0 0 10px #d3d3d3;
+            padding: 0rem !important;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark static-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="vendor/images/logo@2x.png" style="width: 113px; margin: 8px;" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item item-1">
+                        <a class="nav-link" href="dashboard.html">DASHBAORD
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="account.html">ACCOUNT</a>
+                    </li>
+                </ul>
+                <button class="float-right login-btn margin-btn"> LOGOUT </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-12 col-md-4 my-margin">
+
+                <div class="login-div">
+                    <div style="padding: 15px 25px;">
+
+                        <input type="text" placeholder="PERNAME" class="input-field mt-3">
+                        <input type="text" placeholder="SURNAME" class="input-field mt-3">
+                        <input type="text" placeholder="STREET & NUMBER" class="input-field mt-3">
+                        <input type="text" placeholder="ZIP CODE" class="input-field mt-3">
+                        <input type="text" placeholder="CITY" class="input-field mt-3">
+                        <input type="text" placeholder="COUNTRY" class="input-field mt-3">
+                        <input type="text" placeholder="EMAIL" class="input-field mt-3">
+
+
+                        <div class="text-center">
+                            <button class="btn-custom" style="width: auto; margin-bottom: 18px; padding: 8px 27px;">
+                                SAVE </button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-12 col-md-4 my-margin">
+                <div class="login-div">
+                    <div style="padding: 15px 25px;">
+
+                        <input type="text" placeholder="PASSWORD" class="input-field mt-3">
+                        <input type="text" placeholder="RETYPE PASSWORD" class="input-field mt-3">
+
+
+                        <div class="text-center">
+                            <button class="btn-custom" style="width: auto; margin-bottom: 18px; padding: 8px 27px;">
+                                SAVE </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 my-margin">
+                <div class="login-div" style="padding-top: 0px !important;">
+                    <button class="btn-custom" style="margin-top: 0px !important;"> PAYMENT </button>
+                    <div style="padding: 15px 25px;">
+
+                        <div class="text-center">
+                            <p class="my-p">
+                                Basic Subscription <br>
+                                10,00 $ / Month
+                            </p>
+                        </div>
+
+                        <div class="text-center">
+
+                            <button class="btn-custom" style="width: auto; margin-bottom: 23px; padding: 8px 27px;"
+                                id="checkout-button-plan_GcnDHKLALU0Lbv" role="link">
+                                PAY
+                            </button>
+
+                            <div id="error-message"></div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/jquery/jquery.slim.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        (function () {
+            var stripe = Stripe('pk_live_oB9myKEG7uWDTcyiD9OVRQlF00ItsuTnst');
+
+            var checkoutButton = document.getElementById('checkout - button - plan_GcnDHKLALU0Lbv');
+            checkoutButton.addEventListener('click', function () {
+                // When the customer clicks on the button, redirect
+                // them to Checkout.
+                stripe.redirectToCheckout({
+                        lineItems: [{
+                            price:'plan_GcnDHKLALU0Lbv',
+                            quantity: 1
+                        }],
+                        mode: 'subscription',
+                        // Do not rely on the redirect to the successUrl for fulfilling
+                        // purchases, customers may not always reach the success_url after
+                        // a successful payment.
+                        // Instead use one of the strategies described in
+                        // https://stripe.com/docs/payments/checkout/fulfillment
+                        successUrl: 'https: //finivia.de/success',
+                            cancelUrl: 'https: //finivia.de/canceled',
+                    })
+                    .then(function (result) {
+                        if (result.error) {
+                            // If `redirectToCheckout` fails due to a browser or network
+                            // error, display the localized error message to your customer.
+                            var displayError = document.getElementById('error - message');
+                            displayError.textContent = result.error.message;
+                        }
+                    });
+            });
+        })();
+    </script>
+
+</body>
+
+</html>
